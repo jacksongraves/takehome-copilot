@@ -1,0 +1,33 @@
+{
+	"type": "object",
+	"properties": {
+		"workout_plan_id": {
+			"type": "string"
+		},
+		"user_id": {
+			"type": "string"
+		},
+		"date": {
+			"type": "string"
+		},
+		"workouts": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"workout_ids": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"is_rest_day": {
+						"type": "boolean"
+					}
+				},
+				"required": ["workout_ids"]
+			}
+		}
+	},
+	"required": ["workout_plan_id", "user_id", "date", "workouts"]
+}

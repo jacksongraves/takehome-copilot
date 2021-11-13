@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import reducers from "./reducers";
+import thunk from "redux-thunk";
+import { reducers } from "./reducers";
 
 // Set up the initial state
 const initialState = {
@@ -8,7 +9,7 @@ const initialState = {
 };
 
 // Set up middleware (for now, just the dev tools for debugging)
-const middleware = composeWithDevTools(applyMiddleware());
+const middleware = composeWithDevTools(applyMiddleware(...[thunk]));
 
 // set up the Redux store
 const store = createStore(reducers, initialState, middleware);

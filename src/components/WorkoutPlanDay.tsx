@@ -11,12 +11,18 @@ import { Typography, Box } from "@mui/material";
  */
 export const WorkoutPlanDay: FC = (): JSX.Element => {
 	return (
-		<Box sx={{ bgcolor: "secondary" }}>
-			<Box>
-				<Typography variant="body2" color="text.secondary" align="center">
-					Workout Plan Day
-				</Typography>
-			</Box>
+		<Box
+			sx={{
+				bgcolor: "secondary",
+				flexGrow: 1,
+				height: "100vh",
+				overflow: "auto",
+			}}
+			component="main"
+		>
+			<Typography variant="body2" color="text.secondary" align="center">
+				Workout Plan Day
+			</Typography>
 		</Box>
 	);
 };
