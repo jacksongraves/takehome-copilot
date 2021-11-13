@@ -1,5 +1,9 @@
 // @react
-import React, { Fragment } from "react";
+import React from "react";
+
+// @redux
+import { Provider } from "react-redux";
+import store from "./store";
 
 // @mui
 import { Typography, Container } from "@mui/material";
@@ -16,7 +20,7 @@ import { Header, Footer } from "./components";
  * @returns React
  */
 export const App = (): JSX.Element => (
-	<Fragment>
+	<Provider store={store}>
 		<CssBaseline />
 		<Header />
 		<MainView />
@@ -24,5 +28,5 @@ export const App = (): JSX.Element => (
 			<Grid container justifyContent="center" spacing={10}></Grid>
 		</Container> */}
 		<Footer />
-	</Fragment>
+	</Provider>
 );
