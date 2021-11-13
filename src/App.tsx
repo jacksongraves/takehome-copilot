@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// @react
+import React, { Fragment } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// @mui
+import { Typography, Container } from "@mui/material";
+import { CssBaseline, Grid } from "@material-ui/core";
 
-export default App;
+// @views
+import { MainView } from "./views";
+
+// @components
+import { Header, Footer } from "./components";
+
+/**
+ * App is the basic component that holds the views and components
+ * @returns React
+ */
+export const App = (): JSX.Element => (
+	<Fragment>
+		<CssBaseline />
+		<Header />
+		<MainView />
+		{/* <Container maxWidth="lg">
+			<Grid container justifyContent="center" spacing={10}></Grid>
+		</Container> */}
+		<Footer />
+	</Fragment>
+);
