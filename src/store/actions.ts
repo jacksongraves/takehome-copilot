@@ -10,7 +10,7 @@ import {
 } from "../apis/deltatrainer";
 
 // @types
-import { Workout } from "../types";
+import { Workout, WorkoutPlan } from "../types";
 
 export const fetchUserWorkouts = (user_id: string) => {
 	return async (dispatch: Dispatch<Action>) => {
@@ -19,22 +19,26 @@ export const fetchUserWorkouts = (user_id: string) => {
 		});
 
 		try {
-			const { data } = generateWorkouts(user_id);
-			console.log(data);
+			const { data: workouts }: { data: Workout[] } = generateWorkouts(user_id);
+			console.log(workouts);
 			// const { data }: { data: WorkoutPlan[] } = await DeltaTrainer.post(
 			// 	"/demo/getUserWorkouts",
 			// 	{ user_id }
 			// );
-			// console.log(data);
 
 			dispatch({
 				type: ActionType.FETCH_USER_WORKOUTS_SUCCESS,
-				payload: data,
+				payload: { workouts },
+			});
+
+			dispatch({
+				type: ActionType.PAGINATE_WORKOUTS,
+				payload: { page: 1 },
 			});
 		} catch (error: any) {
 			dispatch({
 				type: ActionType.FETCH_USER_WORKOUTS_FAILURE,
-				payload: error.message,
+				payload: { error },
 			});
 		}
 	};
@@ -50,8 +54,9 @@ export const fetchUserWorkoutPlans = (
 		});
 
 		try {
-			const { data } = generateWorkoutPlans(user_id, workouts);
-			console.log(data);
+			const { data: workoutPlans }: { data: WorkoutPlan[] } =
+				generateWorkoutPlans(user_id, workouts);
+			console.log(workoutPlans);
 			// const { data }: { data: WorkoutPlan[] } = await DeltaTrainer.post(
 			// 	"/demo/getUserWorkoutPlans",
 			// 	{ user_id }
@@ -60,48 +65,65 @@ export const fetchUserWorkoutPlans = (
 
 			dispatch({
 				type: ActionType.FETCH_USER_WORKOUT_PLANS_SUCCESS,
-				payload: data,
+				payload: { workoutPlans },
+			});
+
+			dispatch({
+				type: ActionType.PAGINATE_WEEKS,
+				payload: { page: 1 },
 			});
 		} catch (error: any) {
 			dispatch({
 				type: ActionType.FETCH_USER_WORKOUT_PLANS_FAILURE,
-				payload: error.message,
+				payload: { error },
 			});
 		}
 	};
 };
 
-export const duplicateWorkout = (workout_id: string) => {
+export const duplicateWorkout =
+	(workout_id: string, page: number) => (dispatch: Dispatch<Action>) => {
+		dispatch({
+			type: ActionType.DUPLICATE_WORKOUT,
+			payload: { workout_id },
+		});
+
+		dispatch({
+			type: ActionType.PAGINATE_WORKOUTS,
+			payload: { page },
+		});
+	};
+
+export const deleteWorkout =
+	(workout_id: string, page: number) => (dispatch: Dispatch<Action>) => {
+		dispatch({
+			type: ActionType.DELETE_WORKOUT,
+			payload: { workout_id },
+		});
+
+		dispatch({
+			type: ActionType.PAGINATE_WORKOUTS,
+			payload: { page },
+		});
+	};
+
+export const paginateWorkouts = (page: number) => {
 	return {
-		type: "DUPLICATE",
-		payload: {},
+		type: ActionType.PAGINATE_WORKOUTS,
+		payload: { page },
 	};
 };
 
+// Workout Plans
 export const removeWorkoutFromPlan = (workout_id: string) => {
 	return {
-		type: "REMOVE",
-		payload: {},
+		type: ActionType.REMOVE_WORKOUT_FROM_PLAN,
+		payload: { workout_id },
 	};
 };
-
-export const deleteWorkout = (workout_id: string) => {
+export const paginateWeeks = (direction: number) => {
 	return {
-		type: "DELETE",
-		payload: {},
-	};
-};
-
-export const paginateWorkouts = () => {
-	return {
-		type: "PAGINATE_WORKOUTS",
-		payload: {},
-	};
-};
-
-export const paginateWeeks = () => {
-	return {
-		type: "PAGINATE_WEEKS",
+		type: ActionType.PAGINATE_WEEKS,
 		payload: {},
 	};
 };

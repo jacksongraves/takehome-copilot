@@ -23,7 +23,10 @@ const user_id = "webdev@deltatrainer.fit";
  */
 export const MainView = (): JSX.Element => {
 	const { fetchUserWorkouts, fetchUserWorkoutPlans } = useActions();
-	const { workouts, workoutPlans } = useTypedSelector((state) => state);
+	const {
+		workoutsState: { workouts },
+		workoutPlansState: workoutPlans,
+	} = useTypedSelector((state) => state);
 
 	useEffect(() => {
 		(async () => {

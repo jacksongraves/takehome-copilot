@@ -2,7 +2,7 @@
 import React, { FC, useState } from "react";
 
 // @redux
-import { useTypedSelector } from "../store";
+import { useActions, useTypedSelector } from "../store";
 
 // @mui
 import { Box, Grid, Container, Paper, Toolbar } from "@mui/material";
@@ -11,7 +11,7 @@ import { Box, Grid, Container, Paper, Toolbar } from "@mui/material";
 import { Reply as PreviousIcon } from "@mui/icons-material";
 
 // @components
-import { Header, WorkoutCard } from "../components";
+import { Header, Paginator, WorkoutCard } from "../components";
 
 // @types
 import { Workout, WorkoutPlan, WorkoutPlanDay } from "../types";
@@ -22,14 +22,18 @@ import { Workout, WorkoutPlan, WorkoutPlanDay } from "../types";
  * @returns React
  */
 export const WorkoutPanel: FC = (): JSX.Element => {
+	const { workouts, maxPage, visibleWorkouts } = useTypedSelector(
+		(state) => state.workoutsState
+	);
+
+	const { paginateWorkouts } = useActions();
+
 	const [page, setPage] = useState(1);
 
-	const workouts = useTypedSelector((state) => state.workouts);
-
 	// Render workouts and account for pagination
-	const renderedWorkouts = workouts.map((workout: Workout) => (
+	const renderedWorkouts = visibleWorkouts.map((workout: Workout) => (
 		<Grid item xs={12} md={6} key={workout.workout_id}>
-			<WorkoutCard name={workout.name} />
+			<WorkoutCard {...workout} />
 		</Grid>
 	));
 
@@ -51,9 +55,18 @@ export const WorkoutPanel: FC = (): JSX.Element => {
 					{renderedWorkouts}
 				</Grid>
 
-				{/* Abstract as a Pagination component */}
-				<PreviousIcon />
-				<PreviousIcon sx={{ transform: "scaleX(-1)" }} />
+				<Paginator
+					maxPage={maxPage}
+					page={page}
+					onBack={() => {
+						setPage(Math.max(1, page - 1));
+						paginateWorkouts(page);
+					}}
+					onNext={() => {
+						setPage(Math.min(maxPage, page + 1));
+						paginateWorkouts(page);
+					}}
+				/>
 			</Container>
 		</Box>
 	);

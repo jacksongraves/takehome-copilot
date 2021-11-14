@@ -6,6 +6,13 @@ import { WorkoutPlan } from "../../types";
 
 const initialState: WorkoutPlan[] = [];
 
+const initialStateMeta = {
+	loading: false,
+	workoutPlan: [],
+	activeWorkoutPlan: null,
+	error: null,
+};
+
 // We will start with one reducer (in this case) to handle the state of workouts.
 export const workoutPlansReducer = produce(
 	(state = initialState, { type, payload }) => {
